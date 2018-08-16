@@ -72,7 +72,7 @@ class AddCourseView(LoginRequiredMixin, SuccessMessageMixin, FormView):
         fields['bill_to_email'] = request.user.email
         fields['locale'] = 'en-us'
         fields['currency'] = 'usd'
-        fields['type'] = 'sale'
+        fields['transaction_type'] = 'sale'
         fields['reference_number'] = transaction.id
 
         context = sign_fields_to_context(fields, context)
