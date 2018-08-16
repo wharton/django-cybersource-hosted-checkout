@@ -1,0 +1,23 @@
+<html>
+<head>
+    <title>test</title>
+     <script type="text/javascript">
+         function load() {
+              // window.document.test.submit();
+              return;
+         }
+     </script>
+</head>
+<body onload="load()">
+<form name="test" method="post" action="{{ url }}">
+    {% for name, value in fields.items %}
+        <input type="hidden" name="{{ name }}" value="{{ value }}" />
+    {% endfor %}
+
+    <input type="hidden" name="signed_field_names" value="{{ signed_field_names }}" />
+    <input type="hidden" name="signature" value="{{ signature }}" />
+    <input type="hidden" name="unsigned_field_names" />
+    {# <input type="hidden" name="" value="{{  }}" /> #}
+</form>
+</body>
+</html>
