@@ -2,7 +2,17 @@
 
 This package provides utilities for using CyberSource Secure Acceptance Hosted Checkout.
 
-## Settings
+It assumes you have a working knowledge of the product and profiles; you can [read the CyberSource manual here](http://apps.cybersource.com/library/documentation/dev_guides/Secure_Acceptance_WM/Secure_Acceptance_WM.pdf).
+
+The heavy lifting it does is properly creating the `signed_date_time`, `fields_to_sign`, and `signature` fields and automatically include them in the `POST`, along with any fields you need to pass along.
+
+## Installation
+
+First, `pip install django-cybersource-hosted-checkout`, and add `'cybersource_hosted_checkout'` to your `INSTALLED_APPS` list.
+
+### Settings
+
+These settings are required to be present in Django's settings.
 
 * CYBERSOURCE_URL
     * For testing / development: 'https://testsecureacceptance.cybersource.com/pay'
@@ -11,7 +21,7 @@ CYBERSOURCE_PROFILE_ID = '[Your CyberSource Profile ID]'
 CYBERSOURCE_ACCESS_KEY = '[Your CyberSource Access Key]'
 CYBERSOURCE_SECRET_KEY = '[Your CyberSource Secret Key'
 
-## Configuration
+## Code and Configuration
 
 ### models.py
 
@@ -28,6 +38,8 @@ class CyberSourceTransaction(AstractCyberSourceTransaction):
 ```
 
 ### views.py
+
+You can call the relevant functions from within a FormView.
 
 ```python
 from uuid import uuid4
@@ -48,7 +60,7 @@ class AddCourseView(LoginRequiredMixin, SuccessMessageMixin, FormView):
         transaction.user = request.user
         transaction.save()
 
-        # Credit card; redirect to CyberSource
+        # Fields to pass to CyberSource
         context = super().get_context_data(**kwargs)
         fields = {}
         fields['profile_id'] = settings.CYBERSOURCE_PROFILE_ID
@@ -65,6 +77,7 @@ class AddCourseView(LoginRequiredMixin, SuccessMessageMixin, FormView):
 
         context = sign_fields_to_context(fields, context)
 
+        # Render a page which POSTs to CyberSource via JavaScript.
         return render(
             request,
             'cybersource_hosted_checkout/post_to_cybersource.html',
