@@ -14,12 +14,12 @@ First, `pip install django-cybersource-hosted-checkout`, and add `'cybersource_h
 
 These settings are required to be present in Django's settings.
 
-* CYBERSOURCE_URL
-    * For testing / development: 'https://testsecureacceptance.cybersource.com/pay'
-    * For production: 'https://secureacceptance.cybersource.com/pay'
-CYBERSOURCE_PROFILE_ID = '[Your CyberSource Profile ID]'
-CYBERSOURCE_ACCESS_KEY = '[Your CyberSource Access Key]'
-CYBERSOURCE_SECRET_KEY = '[Your CyberSource Secret Key'
+* `CYBERSOURCE_URL`
+    * For testing / development: `https://testsecureacceptance.cybersource.com/pay`
+    * For production: `https://secureacceptance.cybersource.com/pay`
+* `CYBERSOURCE_PROFILE_ID` = '[Your CyberSource Profile ID]'
+* `CYBERSOURCE_ACCESS_KEY` = '[Your CyberSource Access Key]'
+* `CYBERSOURCE_SECRET_KEY` = '[Your CyberSource Secret Key]'
 
 ## Code and Configuration
 

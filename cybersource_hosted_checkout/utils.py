@@ -24,6 +24,7 @@ def sign_fields_to_context(fields, context):
     Builds the list of file names and data to sign, and created the
     signature required by CyberSource.
     """
+    fields['device_fingerprint_id'] = 'C0F803ADD371A99929B8AD40A439792F'
     fields['signed_date_time'] = str(datetime.datetime.utcnow().isoformat(timespec='seconds')) + 'Z'
     signed_field_names = []
     data_to_sign = []
