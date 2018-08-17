@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class AstractCyberSourceTransaction(models.Model):
+class AbstractCyberSourceTransaction(models.Model):
     """
     Stores credit card transaction receipts made with CyberSource.
     """

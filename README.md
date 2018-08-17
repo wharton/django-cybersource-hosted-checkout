@@ -41,16 +41,19 @@ These settings are required to be present in Django's settings.
 
 ### models.py
 
-Create a model in an app in your Django project which inherited from `AstractCyberSourceTransaction`; you can add any additional fields you wish to store. Then `makemigrations` and `migrate`.
+In this example, we will be charging a user of our Django site $19.95 in U.S. dollars to purchase a course.
+
+First, create a model in an app in your Django project which inherited from `AstractCyberSourceTransaction`; you can add any additional fields you wish to store. Then `makemigrations` and `migrate`.
 
 ```python
-from cybersource_hosted_checkout.models import AstractCyberSourceTransaction
+from cybersource_hosted_checkout.models import AbstractCyberSourceTransaction
 
 class CyberSourceTransaction(AstractCyberSourceTransaction):
     """
     Stores credit card transaction receipts made with CyberSource.
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.PROTECT)
 ```
 
 ### views.py
