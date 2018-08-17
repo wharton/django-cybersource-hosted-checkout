@@ -6,6 +6,20 @@ It assumes you have a working knowledge of the product and profiles; you can [re
 
 The heavy lifting it does is properly creating the `signed_date_time`, `fields_to_sign`, and `signature` fields and automatically include them in the `POST`, along with any fields you need to pass along.
 
+If you don't feel like making your eyes bleed with that awful PDF above, here's a TL;DR:
+
+## Create Your CyberSource Profile
+
+You'll have to do this in both the CyberSource TEST and LIVE environments. Start with TEST. The process is the same.
+
+* Log in here: https://businesscenter.cybersource.com/ebc/login/
+* Under `Tools & Settings`, click `Profiles`, then `Create New Profile`.
+* Fill in the form and click `Save`. Then click the profile name you just created to edit it further.
+* Copy your `Profile ID` from this screen into your Django settings as `CYBERSOURCE_PROFILE_ID`. You will notice there are eight sections you can modify. I will only cover the required areas here.
+    * Payment Settings: enter at least one `Card Type` with at least one `Currency` associated with it.
+    * Security: click `Create New Key`. Copy the `Access Key` and `Secret Key` values to your Django settings as `CYBERSOURCE_ACCESS_KEY` and `CYBERSOURCE_SECRET_KEY` respectively.
+    
+
 ## Installation
 
 First, `pip install django-cybersource-hosted-checkout`, and add `'cybersource_hosted_checkout'` to your `INSTALLED_APPS` list.
