@@ -24,18 +24,21 @@ def sign_fields_to_context(fields, context):
     Builds the list of file names and data to sign, and created the
     signature required by CyberSource.
     """
-    fields['device_fingerprint_id'] = 'C0F803ADD371A99929B8AD40A439792F'
     fields['signed_date_time'] = str(datetime.datetime.utcnow().isoformat(timespec='seconds')) + 'Z'
     signed_field_names = []
     data_to_sign = []
     for key, value in fields.items():
         signed_field_names.append(key)
+
+    signed_field_names.append('unsigned_field_names')
+    fields['unsigned_field_names'] = ''
+    signed_field_names.append('signed_field_names')
+    fields['signed_field_names'] = ','.join(signed_field_names)
+
+    for key, value in fields.items():
         data_to_sign.append(f'{key}={value}')
 
-    print(','.join(data_to_sign))
-
     context['fields'] = fields
-    context['signed_field_names'] = ','.join(signed_field_names)
     context['signature'] = create_sha256_signature(
         settings.CYBERSOURCE_SECRET_KEY,
         ','.join(data_to_sign),

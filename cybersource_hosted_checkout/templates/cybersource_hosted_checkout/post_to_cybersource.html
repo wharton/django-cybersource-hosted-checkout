@@ -1,22 +1,14 @@
 <html>
 <head>
     <title>Django: JavaScript POST to CyberSource</title>
-     <script type="text/javascript">
-         function load() {
-              window.document.test.submit();
-              return;
-         }
-     </script>
 </head>
-<body onload="load()">
-<form name="test" method="post" action="{{ url }}">
+<body onload="window.document.post_to_cybersource.submit();">
+<form name="post_to_cybersource" method="post" action="{{ url }}">
     {% for name, value in fields.items %}
         <input type="hidden" name="{{ name }}" value="{{ value }}" />
     {% endfor %}
 
-    <input type="hidden" name="signed_field_names" value="{{ signed_field_names }}" />
     <input type="hidden" name="signature" value="{{ signature }}" />
-    <input type="hidden" name="unsigned_field_names" value="" />
 </form>
 </body>
 </html>
