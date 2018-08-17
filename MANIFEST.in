@@ -1,3 +1,4 @@
 include README.md
+recursive-include cybersource_hosted_checkout *
 global-exclude __pycache__
 global-exclude *.py[co]
