@@ -171,17 +171,9 @@ urlpatterns = [
 
 ## Release Notes
 
-### 0.0.3
+### 0.0.1 - 0.0.4
 
-More tweaks to the README.
-
-### 0.0.2
-
-* Update README and fix a typo in `AbstractCyberSourceTransaction`.
-
-### 0.0.1
-
-* Initial release
+Initial releases and documentation improvements.
 
 ## Contributors
 
