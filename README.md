@@ -130,7 +130,7 @@ class CyberSourceResponseView(CsrfExemptMixin, View):
             # a login.
             transaction = CyberSourceTransaction.objects.get(
                 id=request.POST.get('req_reference_number'),
-                transaction_uuid=request.POST.get('req_transaction_uuid'),
+                uuid=request.POST.get('req_transaction_uuid'),
             )
             transaction.return_from_cybersource = datetime.datetime.now()
             # Here is where you'll put your code in place of this dummy function.
@@ -171,7 +171,7 @@ urlpatterns = [
 
 ## Release Notes
 
-### 0.0.1 - 0.0.4
+### 0.0.1 - 0.0.5
 
 Initial releases and documentation improvements.
 
