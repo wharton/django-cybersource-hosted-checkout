@@ -45,7 +45,7 @@ These settings are required to be present in Django's settings.
 
 In this example, we will be charging a user of our Django site $19.95 in U.S. dollars to purchase a course.
 
-First, create a model in an app in your Django project which inherited from `AbstractCyberSourceTransaction`; you can add any additional fields you wish to store. The base model stores a unique identifier, a transaction UUID, a time stamp of when the transaction is created in Django, and another time stamp of when it is completed from CyberSource. In this example, we are adding `user` and `course`. Then `makemigrations` and `migrate`.
+First, create a model in an app in your Django project which inherits from `AbstractCyberSourceTransaction`; the base model stores a unique identifier, a transaction UUID, a time stamp of when the transaction is created in Django, and another time stamp of when it is completed from CyberSource. You can add any additional fields you wish to track and store. In this example, we are adding `user` and `course`, so we can complete the transaction after payment. Then `makemigrations` and `migrate`.
 
 ```python
 from django.db import models
@@ -61,7 +61,7 @@ class CyberSourceTransaction(AbstractCyberSourceTransaction):
 
 ### views.py
 
-With a Django form, we call the functions and render the template which will automatically prepare the data for CyberSource, and POST it to their server. The `fields` dictionary contain CyberSource specific fields required to perform a transaction. You can see a full list in the manual; the example below is for a one-time purchase of the course for $19.95.
+Here, we create a Django form, and in `form_valid()` we call the functions and render the template which will automatically prepare the data for CyberSource and POST it to their server. The `fields` dictionary contains CyberSource specific fields required to perform a transaction. You can see a full list in the manual; the example below is for a one-time purchase of the course for $19.95.
 
 ```python
 import datetime
