@@ -5,13 +5,13 @@ with open('README.md') as f:
 
 setup(
     name='django-cybersource-hosted-checkout',
-    version="0.1.0",
+    version="0.0.1",
     description='This package provides utilities for using CyberSource Secure Acceptance Hosted Checkout.',
     long_description=long_description,
     long_description_content_type='text/markdown',
     author='Tim Allen',
     author_email='tallen@wharton.upenn.edu',
-    url='https://github.com/FlipperPA/django-ssh-deployer',
+    url='https://github.com/wharton/django-cybersource-hosted-checkout',
     include_package_data=True,
     packages=find_packages(),
     zip_safe=False,
@@ -19,7 +19,7 @@ setup(
         'Django',
     ],
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 3 - Alpha',
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
