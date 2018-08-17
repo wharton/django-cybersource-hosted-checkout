@@ -26,6 +26,8 @@ You'll have to do this in both the CyberSource TEST and LIVE environments. Start
 
 First, `pip install django-cybersource-hosted-checkout`, and add `'cybersource_hosted_checkout'` to your `INSTALLED_APPS` list.
 
+If you're going to be using the examples below to get started, you'll also need to `pip install django-braces`.
+
 ### Settings
 
 These settings are required to be present in Django's settings.
@@ -46,6 +48,7 @@ In this example, we will be charging a user of our Django site $19.95 in U.S. do
 First, create a model in an app in your Django project which inherited from `AstractCyberSourceTransaction`; you can add any additional fields you wish to store. The base model stored a unique identifier, a transaction UUID, when the transaction is created in Django, and when it is completed from CyberSource. In this example, we are adding `user` and `course`. Then `makemigrations` and `migrate`.
 
 ```python
+from django.db import models
 from cybersource_hosted_checkout.models import AbstractCyberSourceTransaction
 
 class CyberSourceTransaction(AstractCyberSourceTransaction):
@@ -61,7 +64,14 @@ class CyberSourceTransaction(AstractCyberSourceTransaction):
 With a Django form, we call the functions and render the template which will automatically prepare the data for CyberSource, and POST it to their server. The `fields` dictionary contain CyberSource specific fields required to perform a transaction. You can see a full list in the manual; the example below is for a one-time purchase of the course for $19.95.
 
 ```python
+import datetime
 from uuid import uuid4
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
+from django.views import View
+from django.views.generic import FormView
+from braces import LoginRequiredMixin, CsrfExemptMixin
 from my_app.models import CyberSourceTransaction
 
 class AddCourseView(LoginRequiredMixin, SuccessMessageMixin, FormView):
@@ -75,7 +85,7 @@ class AddCourseView(LoginRequiredMixin, SuccessMessageMixin, FormView):
         course = Course.objects.get(course_code=form.cleaned_data['course_code'])
 
         # Create a transaction in the database before we pass to CyberSource;
-        # we will update this with the course on the return call from CyberSource
+        # we will update this with a timestamp on return from CyberSource
         transaction_uuid = uuid4().hex
         transaction = CyberSourceTransaction()
         transaction.transaction_uuid = transaction_uuid
@@ -83,7 +93,7 @@ class AddCourseView(LoginRequiredMixin, SuccessMessageMixin, FormView):
         transaction.course = course
         transaction.save()
 
-        # Fields to pass to CyberSource
+        # Fields to pass to CyberSource - see manual for a full list
         context = super().get_context_data(**kwargs)
         fields = {}
         fields['profile_id'] = settings.CYBERSOURCE_PROFILE_ID
@@ -106,6 +116,34 @@ class AddCourseView(LoginRequiredMixin, SuccessMessageMixin, FormView):
             'cybersource_hosted_checkout/post_to_cybersource.html',
             context=context,
         )
+
+class CyberSourceResponseView(CsrfExemptMixin, View):
+    """
+    Recevies a POST from CyberSource and redirects to home.
+    """
+
+    def post(self, request):
+        if request.POST.get('decision').upper() == 'ACCEPT':
+            # Success! Add the course by getting the transaction we started.
+            transaction = CyberSourceTransaction.objects.get(
+                id=request.POST.get('req_reference_number'),
+            )
+            transaction.return_from_cybersource = datetime.datetime.now()
+            # Here is where you'll put your code in place of this dummy function.
+            add_course_for_user(transaction.course, transaction.user, request)
+            messages.success(
+                request,
+                'Your payment was successful and the course has been added. Happy trading!',
+            )
+            transaction.save()
+        else:
+            # Uh oh, unsuccessful payment.
+            messages.error(
+                request,
+                'Sorry, your payment was not successful.',
+            )
+
+        return redirect(reverse_lazy('home'))
 ```
 
 
