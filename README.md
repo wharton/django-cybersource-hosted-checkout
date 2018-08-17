@@ -43,7 +43,7 @@ These settings are required to be present in Django's settings.
 
 In this example, we will be charging a user of our Django site $19.95 in U.S. dollars to purchase a course.
 
-First, create a model in an app in your Django project which inherited from `AstractCyberSourceTransaction`; you can add any additional fields you wish to store. Then `makemigrations` and `migrate`.
+First, create a model in an app in your Django project which inherited from `AstractCyberSourceTransaction`; you can add any additional fields you wish to store. The base model stored a unique identifier, a transaction UUID, when the transaction is created in Django, and when it is completed from CyberSource. In this example, we are adding `user` and `course`. Then `makemigrations` and `migrate`.
 
 ```python
 from cybersource_hosted_checkout.models import AbstractCyberSourceTransaction
@@ -58,7 +58,7 @@ class CyberSourceTransaction(AstractCyberSourceTransaction):
 
 ### views.py
 
-You can call the relevant functions from within a FormView.
+With a Django form, we call the functions and render the template which will automatically prepare the data for CyberSource, and POST it to their server. The `fields` dictionary contain CyberSource specific fields required to perform a transaction. You can see a full list in the manual; the example below is for a one-time purchase of the course for $19.95.
 
 ```python
 from uuid import uuid4
@@ -71,12 +71,16 @@ class AddCourseView(LoginRequiredMixin, SuccessMessageMixin, FormView):
     success_message = "Your transaction has been completed."
 
     def form_valid(self, form, request, **kwargs):
+        # Get the proverbial `course` from the database based on something in the form.
+        course = Course.objects.get(course_code=form.cleaned_data['course_code'])
+
         # Create a transaction in the database before we pass to CyberSource;
         # we will update this with the course on the return call from CyberSource
         transaction_uuid = uuid4().hex
         transaction = CyberSourceTransaction()
         transaction.transaction_uuid = transaction_uuid
         transaction.user = request.user
+        transaction.course = course
         transaction.save()
 
         # Fields to pass to CyberSource
@@ -84,7 +88,7 @@ class AddCourseView(LoginRequiredMixin, SuccessMessageMixin, FormView):
         fields = {}
         fields['profile_id'] = settings.CYBERSOURCE_PROFILE_ID
         fields['access_key'] = settings.CYBERSOURCE_ACCESS_KEY
-        fields['amount'] = '99.99'
+        fields['amount'] = '19.95'
         fields['transaction_uuid'] = transaction_uuid
         fields['bill_to_forename'] = request.user.first_name
         fields['bill_to_surname'] = request.user.last_name
@@ -103,6 +107,8 @@ class AddCourseView(LoginRequiredMixin, SuccessMessageMixin, FormView):
             context=context,
         )
 ```
+
+
 
 ## Release Notes
 
