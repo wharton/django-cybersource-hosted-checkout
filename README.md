@@ -45,7 +45,7 @@ These settings are required to be present in Django's settings.
 
 In this example, we will be charging a user of our Django site $19.95 in U.S. dollars to purchase a course.
 
-First, create a model in an app in your Django project which inherited from `AstractCyberSourceTransaction`; you can add any additional fields you wish to store. The base model stored a unique identifier, a transaction UUID, when the transaction is created in Django, and when it is completed from CyberSource. In this example, we are adding `user` and `course`. Then `makemigrations` and `migrate`.
+First, create a model in an app in your Django project which inherited from `AbstractCyberSourceTransaction`; you can add any additional fields you wish to store. The base model stores a unique identifier, a transaction UUID, a time stamp of when the transaction is created in Django, and another time stamp of when it is completed from CyberSource. In this example, we are adding `user` and `course`. Then `makemigrations` and `migrate`.
 
 ```python
 from django.db import models
@@ -94,7 +94,6 @@ class AddCourseView(LoginRequiredMixin, SuccessMessageMixin, FormView):
         transaction.save()
 
         # Fields to pass to CyberSource - see manual for a full list
-        context = super().get_context_data(**kwargs)
         fields = {}
         fields['profile_id'] = settings.CYBERSOURCE_PROFILE_ID
         fields['access_key'] = settings.CYBERSOURCE_ACCESS_KEY
@@ -108,6 +107,7 @@ class AddCourseView(LoginRequiredMixin, SuccessMessageMixin, FormView):
         fields['transaction_type'] = 'sale'
         fields['reference_number'] = transaction.id
 
+        context = super().get_context_data(**kwargs)
         context = sign_fields_to_context(fields, context)
 
         # Render a page which POSTs to CyberSource via JavaScript.
