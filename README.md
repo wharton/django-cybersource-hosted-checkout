@@ -21,6 +21,7 @@ You'll have to do this in both the CyberSource TEST and LIVE environments. Start
     * Payment Settings: enter at least one `Card Type` with at least one `Currency` associated with it.
     * Security: click `Create New Key`. Copy the `Access Key` and `Secret Key` values to your Django settings as `CYBERSOURCE_ACCESS_KEY` and `CYBERSOURCE_SECRET_KEY` respectively.
     * Customer Response Pages: for `Transaction Response Page`, select `Hosted by you`, and enter a route that you will create later in Django, such as `https://www.mysite.com/orders/payment-response/`
+* Once you have completed all of the fields, be sure to `Activate` the profile!
 
 ## Install Django CyberSource Hosted Checkout
 
@@ -45,7 +46,7 @@ These settings are required to be present in Django's settings.
 
 In this example, we will be charging a user of our Django site $19.95 in U.S. dollars to purchase a course.
 
-First, create a model in an app in your Django project which inherits from `AbstractCyberSourceTransaction`; the base model stores a unique identifier, a transaction UUID, a time stamp of when the transaction is created in Django, and another time stamp of when it is completed from CyberSource. You can add any additional fields you wish to track and store. In this example, we are adding `user` and `course`, so we can complete the transaction after payment. Then `makemigrations` and `migrate`.
+First, create a model in an app in your Django project which inherits from `AbstractCyberSourceTransaction`; the abstract model stores a unique identifier, a transaction UUID, a time stamp of when the transaction is created in Django, and another time stamp of when it is completed from CyberSource. You can add any additional fields you wish to track and store. In this example, we are adding `user` and `course`, so we can complete the transaction after payment. Then `makemigrations` and `migrate`.
 
 ```python
 from django.db import models
@@ -61,7 +62,7 @@ class CyberSourceTransaction(AbstractCyberSourceTransaction):
 
 ### views.py
 
-Here, we create a Django form, and in `form_valid()` we call the functions and render the template which will automatically prepare the data for CyberSource and POST it to their server. The `fields` dictionary contains CyberSource specific fields required to perform a transaction. You can see a full list in the manual; the example below is for a one-time purchase of the course for $19.95.
+Here, we leverage a Django `FormView`, and in `form_valid()` we call the functions and render the template which will automatically prepare the data for CyberSource and POST it to their server. The `fields` dictionary contains CyberSource specific fields required to perform a transaction. You can see a full list in the manual; the example below is for a one-time purchase of the course for $19.95.
 
 ```python
 import datetime
@@ -146,7 +147,9 @@ class CyberSourceResponseView(CsrfExemptMixin, View):
         return redirect(reverse_lazy('home'))
 ```
 
-The `AddCourseView` class will display your purchase form, and when it is valid, pass the necessary fields to CyberSource to display their checkout page. After successfully completing a purchase, the user will then be directed back to the route you put in your CyberSource profile (in the example, `https://www.mysite.com/orders/payment-response/`), where we mark the transaction as complete by updating the timestamp `return_from_cybersource` to mark the transaction complete.
+The `AddCourseView` class will display your purchase form, and when it is valid, pass the necessary fields to CyberSource to display their checkout page.
+
+The `CyberSourceResponseView` is the class for the view that is run after a successful checkout from CyberSource. After successfully completing a purchase, the user will then be directed back to the route you put in your CyberSource profile (in the example, `https://www.mysite.com/orders/payment-response/`), where we mark the transaction as complete by updating the timestamp `return_from_cybersource` to mark the transaction complete.
 
 ### urls.py
 
@@ -164,6 +167,10 @@ urlpatterns = [
 ```
 
 ## Release Notes
+
+### 0.0.3
+
+More tweaks to the README.
 
 ### 0.0.2
 
