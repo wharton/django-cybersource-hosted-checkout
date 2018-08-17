@@ -51,7 +51,7 @@ First, create a model in an app in your Django project which inherited from `Ast
 from django.db import models
 from cybersource_hosted_checkout.models import AbstractCyberSourceTransaction
 
-class CyberSourceTransaction(AstractCyberSourceTransaction):
+class CyberSourceTransaction(AbstractCyberSourceTransaction):
     """
     Stores credit card transaction receipts made with CyberSource.
     """
@@ -146,11 +146,30 @@ class CyberSourceResponseView(CsrfExemptMixin, View):
         return redirect(reverse_lazy('home'))
 ```
 
+The `AddCourseView` class will display your purchase form, and when it is valid, pass the necessary fields to CyberSource to display their checkout page. After successfully completing a purchase, the user will then be directed back to the route you put in your CyberSource profile (in the example, `https://www.mysite.com/orders/payment-response/`), where we mark the transaction as complete by updating the timestamp `return_from_cybersource` to mark the transaction complete.
 
+### urls.py
+
+We need to plug our views into routes that match CyberSource.
+
+```python
+from django.urls import path
+from myapp.views import MyHomeView, AddCourseView, CyberSourceResponseView
+
+urlpatterns = [
+    path('', MyHomeView.as_view(), name='home'),
+    path('orders/buy-course/', AddCourseView.as_view(), name='add-course'),
+    path('orders/payment-response/', CyberSourceResponseView.as_view(), name='add-course-cybersource-response'),
+]
+```
 
 ## Release Notes
 
-### 0.1.0
+### 0.0.2
+
+* Update README and fix a typo in `AbstractCyberSourceTransaction`.
+
+### 0.0.1
 
 * Initial release
 
