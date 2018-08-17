@@ -126,8 +126,11 @@ class CyberSourceResponseView(CsrfExemptMixin, View):
     def post(self, request):
         if request.POST.get('decision').upper() == 'ACCEPT':
             # Success! Add the course by getting the transaction we started.
+            # Check both reference number and UUID since we're not requiring
+            # a login.
             transaction = CyberSourceTransaction.objects.get(
                 id=request.POST.get('req_reference_number'),
+                transaction_uuid=request.POST.get('req_transaction_uuid'),
             )
             transaction.return_from_cybersource = datetime.datetime.now()
             # Here is where you'll put your code in place of this dummy function.
