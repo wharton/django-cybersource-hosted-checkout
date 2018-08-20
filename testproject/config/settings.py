@@ -120,3 +120,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+CYBERSOURCE_URL = 'https://testsecureacceptance.cybersource.com/pay'
+CYBERSOURCE_SECRET_KEY = 'testkeytestkeytestkeytestkey'
