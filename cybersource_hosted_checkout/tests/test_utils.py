@@ -21,7 +21,7 @@ class UtilTests(TestCase):
 
     def test_sign_fields(self):
         context = {
-            'context1': 'contextvalue1',
+            'contextkey1': 'contextvalue1',
         }
 
         fields = {
@@ -33,7 +33,7 @@ class UtilTests(TestCase):
         response = sign_fields_to_context(fields, context)
 
         self.assertEqual(
-            response['context1'],
+            response['contextkey1'],
             'contextvalue1',
         )
         self.assertEqual(
