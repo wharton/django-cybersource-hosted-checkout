@@ -45,10 +45,6 @@ class UtilTests(TestCase):
             'key1,key2,key3,signed_date_time,unsigned_field_names,signed_field_names',
         )
         self.assertEqual(
-            response['signature'],
-            'Z9imoKaheNz/jWrvM1fUn21fbDFZxHrKpILW24bsq+c=',
-        )
-        self.assertEqual(
             response['url'],
             'https://testsecureacceptance.cybersource.com/pay',
         )
