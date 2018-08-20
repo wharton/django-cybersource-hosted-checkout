@@ -5,7 +5,7 @@ with open('README.md') as f:
 
 setup(
     name='django-cybersource-hosted-checkout',
-    version="0.0.5",
+    version="0.0.6",
     description='This package provides utilities for using CyberSource Secure Acceptance Hosted Checkout.',
     long_description=long_description,
     long_description_content_type='text/markdown',

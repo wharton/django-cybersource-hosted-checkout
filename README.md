@@ -169,11 +169,22 @@ urlpatterns = [
 ]
 ```
 
+## Running Tests
+
+```bash
+git clone git@github.com:wharton/django-cybersource-hosted-checkout.git
+mkvirtualenv test-cybersource
+cd testproject
+pip install -r requirements.txt
+coverage run --source='..' manage.py test cybersource_hosted_checkout
+coverage report
+```
+
 ## Release Notes
 
-### 0.0.1 - 0.0.5
+### 0.0.1 - 0.0.6
 
-Initial releases and documentation improvements.
+Initial release, tests, and documentation improvements.
 
 ## Contributors
 
