@@ -30,11 +30,16 @@ def sign_fields_to_context(fields, context):
     for key, value in fields.items():
         signed_field_names.append(key)
 
+    # After adding all the included fields, we need to also add
+    # `unsigned_field_names` and `signed_field_names` to the data
+    # to be signed.
     signed_field_names.append('unsigned_field_names')
     fields['unsigned_field_names'] = ''
     signed_field_names.append('signed_field_names')
     fields['signed_field_names'] = ','.join(signed_field_names)
 
+    # Build the fields into a list to sign, which will become
+    # a string when joined by a comma
     for key, value in fields.items():
         data_to_sign.append(f'{key}={value}')
 
