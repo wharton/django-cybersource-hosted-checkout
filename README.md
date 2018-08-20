@@ -174,7 +174,7 @@ urlpatterns = [
 ```bash
 git clone git@github.com:wharton/django-cybersource-hosted-checkout.git
 mkvirtualenv test-cybersource
-cd testproject
+cd django-cybersource-hosted-checkout/testproject
 pip install -r requirements.txt
 coverage run --source='..' manage.py test cybersource_hosted_checkout
 coverage report
