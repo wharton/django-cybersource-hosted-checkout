@@ -156,7 +156,7 @@ The `CyberSourceResponseView` is the class for the view that is run after a succ
 
 ### urls.py
 
-We need to plug our views into routes that match CyberSource.
+Our routes need to match the callback URLs in the CyberSource profile that was created.
 
 ```python
 from django.urls import path
