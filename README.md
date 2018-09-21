@@ -124,7 +124,11 @@ class CyberSourceResponseView(CsrfExemptMixin, View):
     """
 
     def post(self, request):
-        if request.POST.get('decision').upper() == 'ACCEPT':
+        # DECISION can be ACCEPT, REVIEW, DECLINE, ERROR, or CANCEL.
+        # See page 152: http://apps.cybersource.com/library/documentation/dev_guides/Secure_Acceptance_WM/Secure_Acceptance_WM.pdf
+        decision = request.POST.get('decision').upper()
+
+        if decision == 'ACCEPT':
             # Success! Add the course by getting the transaction we started.
             # Check both reference number and UUID since we're not requiring
             # a login.
