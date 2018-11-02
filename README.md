@@ -141,7 +141,7 @@ class CyberSourceResponseView(CsrfExemptMixin, View):
             add_course_for_user(transaction.course, transaction.user, request)
             messages.success(
                 request,
-                'Your payment was successful and the course has been added. Happy trading!',
+                'Your payment was successful and the course has been added.',
             )
             transaction.save()
         else:
