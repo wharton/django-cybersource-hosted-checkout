@@ -4,7 +4,7 @@ This package provides utilities for using CyberSource Secure Acceptance Hosted C
 
 CyberSource Secure Acceptance Hosted Checkout is a round-trip process: you start the payment on your server, then pass off to CyberSource. At the end of the transaction, CyberSource returns to your server at a URL you configure.
 
-We assume you have a working knowledge of the product and profiles; you can [read the CyberSource manual here](http://apps.cybersource.com/library/documentation/dev_guides/Secure_Acceptance_WM/Secure_Acceptance_WM.pdf).
+We assume you have a working knowledge of the product and profiles; you can [read the CyberSource manual here](http://apps.cybersource.com/library/documentation/dev_guides/Secure_Acceptance_Hosted_Checkout/Secure_Acceptance_Hosted_Checkout.pdf).
 
 The heavy lifting it does is properly creating the `signed_date_time`, `fields_to_sign`, and `signature` fields and automatically include them in the `POST`, along with any fields you need to pass along.
 
