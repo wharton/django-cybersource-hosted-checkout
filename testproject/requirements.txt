@@ -1,4 +1,4 @@
-Django>=2.2.9,<3
+Django>=2.2.10,<3
 coverage
 
 # Installs django-cybersource-hosted-checkout from the parent path
