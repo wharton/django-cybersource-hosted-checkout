@@ -14,7 +14,7 @@ If you don't feel like making your eyes bleed with that awful PDF above, here's 
 
 You'll have to do this in both the CyberSource TEST and LIVE environments. Start with TEST. The process is the same.
 
-* Log in here: https://businesscenter.cybersource.com/ebc/login/
+* Log in here: https://businesscenter.cybersource.com/ebc2/
 * Under `Tools & Settings`, click `Profiles`, then `Create New Profile`.
 * Fill in the form and click `Save`. Then click the profile name you just created to edit it further.
 * Copy your `Profile ID` from this screen into your Django settings as `CYBERSOURCE_PROFILE_ID`. You will notice there are eight sections you can modify. I will only cover the required areas here.
